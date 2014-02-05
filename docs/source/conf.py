@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # GridGen documentation build configuration file, created by
-# sphinx-quickstart on Wed Feb  5 11:00:05 2014.
+# sphinx-quickstart on Wed Feb  5 11:26:37 2014.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
