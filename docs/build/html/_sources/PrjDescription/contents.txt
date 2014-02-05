@@ -35,6 +35,12 @@ Each grid point can be described by :math:`(x,y)` location or :math:`(i,j)` loca
 | F      | (1,1)         | (-0.8,0.0)    |                 |
 +--------+---------------+---------------+-----------------+
 
+Algebraic Grid
+++++++++++++++
+
+To complete this project you will first generate a grid using algebraic methods.
+
+
 2. Challenges
 -------------
 

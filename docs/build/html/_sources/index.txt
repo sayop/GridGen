@@ -6,7 +6,12 @@
 Welcome to GridGen's documentation!
 ===================================
 
+This documentation pages are made for CFD class at Geogia Tech in 2014 Spring.
+
+Author: Sayop Kim(sayopkim@gatech.edu)
+
 Contents:
+=========
 
 .. toctree::
    :maxdepth: 2
