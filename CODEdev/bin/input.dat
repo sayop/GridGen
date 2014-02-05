@@ -1,7 +1,7 @@
 # Input file for tecplot print
 Flow in a channel
 imax		41
-jmax		1
+jmax		10
 kmax		19
 # domain input (Corner points: x,y coordinates)
 p1		-0.8	0.0	0.0
@@ -15,9 +15,9 @@ GeoSize		21
 DCsize		11
 width		0.1
 # Grid clustering
-cy		0.001
+cy		2.001
 # Iteration max: If nmax == 0, elliptic grid won't be calculated
-nmax		0
+nmax		100
 # Error Criterion
 ErrMax		0.1
 # Calculate control terms: Pi, Psi

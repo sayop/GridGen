@@ -21,6 +21,7 @@ Contents:
    HowToRun/contents
    Results/contents
    Discussions/contents
+   code
 
 Indices and tables
 ==================

@@ -1,8 +1,8 @@
 Project description
 ===================
 
-1. Given task
--------------
+Given task
+----------
 
 In this exercise you will generate an inviscid, 2-D computational grid around a modified NACA 00xx series airfoil in a channel. The thickness distribution of a modified NACA 00xx series airfoil is given by:
 
@@ -84,8 +84,8 @@ At interior points, :math:`\phi` and :math:`\psi` are found by linear interpolat
    \psi_{i,j} = \psi_{1,j} + \frac{i-1}{imax-1} \left ( \psi_{imax,j} - \psi_{1,j} \right )
 
 
-2. Challenges
--------------
+Challenges
+----------
 
 Demonstrate your solver by generating 5 grids (each with 41x19 grid points):
 

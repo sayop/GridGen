@@ -1,0 +1,11 @@
+Auto Generated Documentation
+============================
+
+:
+
+ NADV =  157465  DT =  2.767306E-08  T =  4.549E-03  TMAX =  5.2099E+02  UMAX =  1.150E+02 (  3.091E-01 -4.258E-03 -4.572E-03 )(  4.256E-03  2.615E-03 -3.242E-03 )
+ !!!!!!!!!!!!!!!!!!!!!!!!
+ The variable DT is NaN
+ !!!!!!!!!!!!!!!!!!!!!!!!
+ EXITING: RUN ABORTING DUE TO NaN
+
