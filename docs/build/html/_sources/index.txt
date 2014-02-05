@@ -18,6 +18,7 @@ Contents:
 
    PrjDescription/contents
    CodeDevel/contents
+   HowToRun/contents
    Results/contents
    Discussions/contents
 

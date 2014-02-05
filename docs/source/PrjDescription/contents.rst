@@ -71,8 +71,46 @@ where the source terms,
 
 where the :math:`A`'s must be defined by mathmatical manipulation.
 
+On the boundaries, :math:`\phi` and :math:`\psi` are defined as follows:
+
+.. math::
+   \text{On } j = 1 \text{ and } j = jmax: \text{  }\phi = \begin{cases} -\frac{x_{\xi\xi}}{x_{\xi}} & \text{ if } |x_{\xi}| > |y_{\xi}| \\ -\frac{y_{\xi\xi}}{y_{\xi}} & \text{ if } |x_{\xi}| \leq |y_{\xi}| \end{cases}
+
+   \text{On } i = 1 \text{ and } i = imax: \text{  }\psi = \begin{cases} -\frac{x_{\eta\eta}}{x_{\eta}} & \text{ if } |x_{\eta}| > |y_{\eta}| \\ -\frac{y_{\eta\eta}}{y_{\eta}} & \text{ if } |x_{\eta}| \leq |y_{\eta}| \end{cases}
+
+At interior points, :math:`\phi` and :math:`\psi` are found by linear interpolation (in computational space) of these boundary values. For example,
+
+.. math::
+   \psi_{i,j} = \psi_{1,j} + \frac{i-1}{imax-1} \left ( \psi_{imax,j} - \psi_{1,j} \right )
+
 
 2. Challenges
 -------------
 
-Under construction
+Demonstrate your solver by generating 5 grids (each with 41x19 grid points):
+
+Grid 1
+++++++
+
+Initial algebraic grid, non-clustered (:math:`C_{y}` = 0.001)
+
+Grid 2
+++++++
+
+Initial algebraic grid, clustered (:math:`C_{y}` = 2.0)
+
+Grid 3
+++++++
+
+Elliptic grid, clustered (:math:`C_{y}` = 2.0), no control terms (:math:`\phi` = :math:`\psi` = 0)
+
+Grid 4
+++++++
+
+Elliptic grid, clustered (:math:`C_{y}` = 2.0), with control terms
+
+Grid 5
+++++++
+
+Now, use your program to generate the best grid you can for inviscid , subsonic flow in the geometry shown. You must keep imax = 41, jmax = 19 and not change the size or shape of the outer and wall boundaries. You may, however, change the grid spacing along any and all of the boundaries and use different levels of grid clustering wherever you think it is appropriate.
+
