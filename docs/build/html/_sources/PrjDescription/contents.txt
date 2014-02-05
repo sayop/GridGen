@@ -19,9 +19,21 @@ A sketch of the computational domain is shown below:
 
 Each grid point can be described by :math:`(x,y)` location or :math:`(i,j)` location where :math:`i` is the index in the :math:`\xi` direction and the :math:`j` index is in the :math:`\eta` direction. The grid should have imax=41 points in the :math:`\xi` direction and jmax=19 points in the :math:`\eta` direction. The coordinates of points A-F shown in the figure are given in the following table:
 
-+--------+---------------+
-| Point  | :math:`(i,j)` |
-+--------+---------------+
++--------+---------------+---------------+-----------------+
+| Point  | :math:`(i,j)` | :math:`(x,y)` |                 |
++--------+---------------+---------------+-----------------+
+| A      | (1,19)        | (-0.8,1.0)    |                 |
++--------+---------------+---------------+-----------------+
+| B      | (41,19)       | (1.8,1.0)     |                 |
++--------+---------------+---------------+-----------------+
+| C      | (41,1)        | (1.8,0.0)     |                 |
++--------+---------------+---------------+-----------------+
+| D      | (31,1)        | (1.0,0.0)     | (trailing edge) |
++--------+---------------+---------------+-----------------+
+| E      | (11,1)        | (0.0,0.0)     | (leading edge)  |
++--------+---------------+---------------+-----------------+
+| F      | (1,1)         | (-0.8,0.0)    |                 |
++--------+---------------+---------------+-----------------+
 
 2. Challenges
 -------------
