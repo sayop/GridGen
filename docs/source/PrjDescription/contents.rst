@@ -1,6 +1,8 @@
 Project description
 ===================
 
+1. Given task
+-------------
 
 In this exercise you will generate an inviscid, 2-D computational grid around a modified NACA 00xx series airfoil in a channel. The thickness distribution of a modified NACA 00xx series airfoil is given by:
 
@@ -17,3 +19,11 @@ A sketch of the computational domain is shown below:
 
 Each grid point can be described by :math:`(x,y)` location or :math:`(i,j)` location where :math:`i` is the index in the :math:`\xi` direction and the :math:`j` index is in the :math:`\eta` direction. The grid should have imax=41 points in the :math:`\xi` direction and jmax=19 points in the :math:`\eta` direction. The coordinates of points A-F shown in the figure are given in the following table:
 
++--------+---------------+
+| Point  | :math:`(i,j)` |
++--------+---------------+
+
+2. Challenges
+-------------
+
+Under construction
