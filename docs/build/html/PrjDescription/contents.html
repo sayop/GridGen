@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Project description &mdash; GridGen 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="GridGen 0.0.1 documentation" href="../index.html" />
+    <link rel="next" title="Code development" href="../CodeDevel/contents.html" />
+    <link rel="prev" title="Computer Project #1" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../CodeDevel/contents.html" title="Code development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Computer Project #1"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GridGen 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="project-description">
+<h1>Project description<a class="headerlink" href="#project-description" title="Permalink to this headline">¶</a></h1>
+<p>In this exercise you will generate an inviscid, 2-D computational grid around a modified NACA 00xx series airfoil in a channel. The thickness distribution of a modified NACA 00xx series airfoil is given by:</p>
+<div class="math">
+\[y(x) = \pm 5t [0.2969 \sqrt{x_{int}x} - 0.126 x_{int} x - 0.3516 (x_{int}x)^{2} + 0.2843(x_{int}x)^{3} - 0.1015 (x_{int}x)^{4}]\]</div>
+<p>where the &#8220;<span class="math">\(+\)</span>&#8221; sign is used for the upper half of the airfoil, the &#8220;<span class="math">\(-\)</span>&#8221; sign is used for the lower half and <span class="math">\(x_{int} = 1.008930411365\)</span>. Note that in the expression above <span class="math">\(x\)</span>, <span class="math">\(y\)</span>, and <span class="math">\(t\)</span> represent values which have been normalized by the airfoil by the airf
+oil chord.</p>
+<p>A sketch of the computational domain is shown below:</p>
+<a class="reference internal image-reference" href="../_images/CP1_compute_domain.png"><img alt="../_images/CP1_compute_domain.png" src="../_images/CP1_compute_domain.png" style="width: 496.2px; height: 271.8px;" /></a>
+<p>Each grid point can be described by <span class="math">\((x,y)\)</span> location or <span class="math">\((i,j)\)</span> location where <span class="math">\(i\)</span> is the index in the <span class="math">\(\xi\)</span> direction and the <span class="math">\(j\)</span> index is in the <span class="math">\(\eta\)</span> direction. The grid should have imax=41 points in the <span class="math">\(\xi\)</span> direction and jmax=19 points in the <span class="math">\(\eta\)</span> direction. The coordinates of points A-F shown in the figure are given in the following table:</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Computer Project #1</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../CodeDevel/contents.html"
+                        title="next chapter">Code development</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/PrjDescription/contents.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../CodeDevel/contents.html" title="Code development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Computer Project #1"
+             >previous</a> |</li>
+        <li><a href="../index.html">GridGen 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Sayop Kim.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>
