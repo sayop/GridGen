@@ -30,6 +30,11 @@ The **main** folder is only used for containing grid-setup related source files.
 2. Code details
 ---------------
 
+The schematic below shows the flow chart of how the GridGen code runs. The code starts to run by reading the important input parameters defined in **input.dat** file.
+
+.. image:: ./images/GridGenFlowChart.png
+   :scale: 80%
+
 The source code shown below is **main.F90** and it calls skeletal subroutines for generating grid structure. The main features of the main code is to make initialized variable arrays and read input and write output files::
 
   PROGRAM main

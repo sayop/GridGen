@@ -4,14 +4,15 @@
 MODULE GridTransformSetup_m
    USE Parameters_m, ONLY: wp
    USE SimulationVars_m, ONLY: imax, jmax, kmax, &
-                               xp, error
+                               xp, cy2, cy3
    IMPLICIT NONE
 
-   PUBLIC CalculateA123, CalculatePiPsi, ThomasLoop, MaxError
+   PUBLIC CalculateA123, CalculatePiPsi, ThomasLoop, &
+          RMScrit, RMSres
 
    REAL(KIND=wp), ALLOCATABLE, DIMENSION(:,:,:,:,:) :: InverseGridMetrics
    REAL(KIND=wp), ALLOCATABLE, DIMENSION(:,:,:) :: A1, A2, A3, Pi, Psi
-   REAL(KIND=wp) :: MaxError
+   REAL(KIND=wp) :: RMScrit, RMSres
 CONTAINS
 
 !-----------------------------------------------------------------------------!
@@ -104,7 +105,7 @@ CONTAINS
    SUBROUTINE CalculatePiPsi()
 !-----------------------------------------------------------------------------!
 ! Initialize Pi and Psy value before moving into pseudo time loop.
-   USE SimulationSetup_m, ONLY: UniformSpacing
+   USE SimulationSetup_m, ONLY: UniformSpacing, GridStretching
 
    IMPLICIT NONE
    INTEGER :: i, j, k
@@ -150,8 +151,10 @@ CONTAINS
    ! Evaluate Pi and Psi at interior points
    DO i = 2, imax - 1
       DO k = 2, kmax - 1
-         Psi(i,j,k) = UniformSpacing(Psi(1,j,k), Psi(imax,j,k), i, imax)
-         Pi(i,j,k) = UniformSpacing(Pi(i,j,1), Pi(i,j,kmax), k, kmax)
+         !Psi(i,j,k) = UniformSpacing(Psi(1,j,k), Psi(imax,j,k), i, imax)
+         Psi(i,j,k) = GridStretching(Psi(1,j,k), Psi(imax,j,k), i, imax, cy3)
+         !Pi(i,j,k) = UniformSpacing(Pi(i,j,1), Pi(i,j,kmax), k, kmax)
+         Pi(i,j,k) = GridStretching(Pi(i,j,1), Pi(i,j,kmax), k, kmax, cy2)
       ENDDO
    ENDDO
    END SUBROUTINE CalculatePiPsi
@@ -167,7 +170,7 @@ CONTAINS
 
    REAL(KIND=wp), DIMENSION(imax) :: a, b, c, d
    REAL(KIND=wp) :: x_ik, x_k, z_ik, z_k
-   error = 0.0_wp
+   RMSres = 0.0_wp
    j = 1
 
    DO k = 2, kmax - 1
@@ -194,7 +197,7 @@ CONTAINS
       CALL SY(1, imax, a, b, c, d)
       ! Update values at n+1 pseudo time
       DO i = 1, imax
-         error = MAX(error,abs((d(i) - xp(1,i,j,k)) / xp(1,i,j,k)) * 100_wp)
+         RMSres = RMSres + (d(i) - xp(1,i,j,k)) ** 2
          xp(1,i,j,k) = d(i)
       ENDDO
 
@@ -221,7 +224,7 @@ CONTAINS
       CALL SY(1, imax, a, b, c, d)
       ! Update values at n+1 pseudo time
       DO i = 1, imax
-         error = MAX(error,abs((d(i) - xp(3,i,j,k)) / xp(3,i,j,k)) * 100_wp)
+         RMSres = RMSres + (d(i) - xp(3,i,j,k)) ** 2
          xp(3,i,j,k) = d(i)
       ENDDO
    ENDDO

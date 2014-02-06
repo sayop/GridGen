@@ -1,7 +1,7 @@
 # Input file for tecplot print
 Flow in a channel
 imax		41
-jmax		1
+jmax		2
 kmax		19
 # domain input (Corner points: x,y coordinates)
 p1		-0.8	0.0	0.0
@@ -14,11 +14,22 @@ FEsize		11
 GeoSize		21
 DCsize		11
 width		0.1
-# Grid clustering
-cy		0.001
+# Grid clustering:
+# cy1: stretched grid in z
+# cy2: stretched Pi in z
+# cy3: stretched Psi in x
+# cy4: stretched grid along FE
+# cy5: stretched grid along ED
+# cy6: stretched grid along DC
+cy1		2.0
+cy2		-5.001
+cy3		0.001
+cy4		-1.2
+cy5		1.0
+cy6		0.001
 # Iteration max: If nmax == 0, elliptic grid won't be calculated
-nmax		0
-# Error Criterion
-ErrMax		0.1
+nmax		500
+# RMS Criterion
+RMScrit		1.0E-6
 # Calculate control terms: Pi, Psi
-iControl	0
+iControl	1

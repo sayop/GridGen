@@ -3,6 +3,7 @@
 
 MODULE GridSetup_m
    USE Parameters_m, ONLY: wp
+   USE SimulationSetup_m, ONLY: GridStretching
    IMPLICIT NONE
 
    PUBLIC :: InitializeGrid, GenerateInteriorPoints
@@ -12,8 +13,6 @@ CONTAINS
    SUBROUTINE InitializeGrid()
 !-----------------------------------------------------------------------------!
    USE io_m, ONLY: ReadGridInput
-   USE SimulationVars_m, ONLY: imax, jmax, kmax,&
-                               xblkV, cy
    IMPLICIT NONE
 
    ! Create Bottom Edge coordinate values
@@ -52,7 +51,7 @@ CONTAINS
    USE io_m, ONLY: width, FEsize, GeoSize, DCsize, &
                    Gpnts
    USE SimulationVars_m, ONLY: imax, jmax, kmax,&
-                               xblkV
+                               xblkV, cy4, cy5, cy6
    USE SimulationVars_m, ONLY: BOTedge
    USE SimulationSetup_m, ONLY: UniformSpacing
    IMPLICIT NONE
@@ -62,20 +61,22 @@ CONTAINS
    WRITE(*,*) ""
    WRITE(*,*) "Creating Bottome edge point values with Airfoil geometry"
    DO i = 2, FEsize
-      BOTedge(1,i) = UniformSpacing(xblkV(1,1), Gpnts(1,1), i, FEsize)
+      BOTedge(1,i) = GridStretching(xblkV(1,1), Gpnts(1,1), i, FEsize, cy4)
       !BOTedge(2,i) = UniformSpacing(xblkV(2,1), Gpnts(2,1), i, FEsize)
-      BOTedge(3,i) = UniformSpacing(xblkV(3,1), Gpnts(3,1), i, FEsize)
+      BOTedge(3,i) = GridStretching(xblkV(3,1), Gpnts(3,1), i, FEsize, cy4)
    ENDDO
    DO i = FEsize + 1, FEsize + GeoSize - 1
-      BOTedge(1,i) = UniformSpacing(Gpnts(1,1), Gpnts(1,2), i-FEsize+1, GeoSize)
+      BOTedge(1,i) = GridStretching(Gpnts(1,1), Gpnts(1,2), i-FEsize+1, GeoSize, cy5)
       !BOTedge(2,i) = UniformSpacing(Gpnts(2,1), Gpnts(2,2), i-FEsize+1, GeoSize)
       !BOTedge(3,i) = UniformSpacing(Gpnts(3,1), Gpnts(3,2), i-FEsize+1, GeoSize)
       BOTedge(3,i) = Airfoil(BOTedge(1,i))
    ENDDO
    DO i = FEsize + GeoSize, imax - 1
-      BOTedge(1,i) = UniformSpacing(Gpnts(1,2), xblkV(1,2), i-FEsize-GeoSize+2, DCsize)
+      BOTedge(1,i) = GridStretching(Gpnts(1,2), xblkV(1,2), i-FEsize-GeoSize+2, &
+                                    DCsize, cy6)
       !BOTedge(2,i) = UniformSpacing(Gpnts(2,2), xblkV(2,2), i-FEsize-GeoSize+2, DCsize)
-      BOTedge(3,i) = UniformSpacing(Gpnts(3,2), xblkV(3,2), i-FEsize-GeoSize+2, DCsize)
+      BOTedge(3,i) = GridStretching(Gpnts(3,2), xblkV(3,2), i-FEsize-GeoSize+2, &
+                                    DCsize, cy6)
    ENDDO
 
    END SUBROUTINE
@@ -99,7 +100,7 @@ CONTAINS
    SUBROUTINE SetEdgePnts()
 !-----------------------------------------------------------------------------!
       USE SimulationVars_m, ONLY: imax, jmax, kmax, &
-                                  xp, xblkV, BOTedge
+                                  xp, xblkV, BOTedge, cy1
       USE SimulationSetup_m, ONLY: UniformSpacing
       IMPLICIT NONE
       INTEGER :: i
@@ -200,13 +201,13 @@ CONTAINS
       DO i = 2, kmax - 1
          xp(1,1,1,i) = UniformSpacing(xblkV(1,1), xblkV(1,3), i, kmax)
          xp(2,1,1,i) = UniformSpacing(xblkV(2,1), xblkV(2,3), i, kmax)
-         xp(3,1,1,i) = GridStretching(xblkV(3,1), xblkV(3,3), i, kmax)
+         xp(3,1,1,i) = GridStretching(xblkV(3,1), xblkV(3,3), i, kmax, cy1)
       ENDDO
       ! edge (2)
       DO i = 2, kmax - 1
          xp(1,imax,1,i) = UniformSpacing(xblkV(1,2), xblkV(1,4), i, kmax)
          xp(2,imax,1,i) = UniformSpacing(xblkV(2,2), xblkV(2,4), i, kmax)
-         xp(3,imax,1,i) = GridStretching(xblkV(3,2), xblkV(3,4), i, kmax)
+         xp(3,imax,1,i) = GridStretching(xblkV(3,2), xblkV(3,4), i, kmax, cy1)
       ENDDO
       ! edige (3)
       DO i = 2, imax - 1
@@ -278,7 +279,7 @@ CONTAINS
    SUBROUTINE GridPntsAlgbra()
 !-----------------------------------------------------------------------------!
       USE SimulationVars_m, ONLY: imax, jmax, kmax, &
-                                  xp, xblkV
+                                  xp, xblkV, cy1
       USE SimulationSetup_m, ONLY: UniformSpacing
       IMPLICIT NONE
       INTEGER :: i, j, k
@@ -310,7 +311,7 @@ CONTAINS
          DO k = 2, kmax - 1
             xp(1,i,1,k) = UniformSpacing(xp(1,i,1,1), xp(1,i,1,kmax), k, kmax)
             xp(2,i,1,k) = UniformSpacing(xp(2,i,1,1), xp(2,i,1,kmax), k, kmax)
-            xp(3,i,1,k) = GridStretching(xp(3,i,1,1), xp(3,i,1,kmax), k, kmax)
+            xp(3,i,1,k) = GridStretching(xp(3,i,1,1), xp(3,i,1,kmax), k, kmax, cy1)
          ENDDO
       ENDDO
       !+++++++++++++++++++++++++++++++++++++++++
@@ -350,7 +351,7 @@ CONTAINS
          DO k = 2, kmax - 1
             xp(1,1,j,k) = UniformSpacing(xp(1,1,j,1), xp(1,1,j,kmax), k, kmax)
             xp(2,1,j,k) = UniformSpacing(xp(2,1,j,1), xp(2,1,j,kmax), k, kmax)
-            xp(3,1,j,k) = GridStretching(xp(3,1,j,1), xp(3,1,j,kmax), k, kmax)
+            xp(3,1,j,k) = GridStretching(xp(3,1,j,1), xp(3,1,j,kmax), k, kmax, cy1)
          ENDDO
       ENDDO
       !+++++++++++++++++++++++++++++++++++++++++
@@ -418,7 +419,7 @@ CONTAINS
    SUBROUTINE GenerateInteriorPoints()
 !-----------------------------------------------------------------------------!
       USE SimulationVars_m, ONLY: imax, jmax, kmax, &
-                                  xp, xblkV
+                                  xp, xblkV, cy1
       USE SimulationSetup_m, ONLY: UniformSpacing
       IMPLICIT NONE
       INTEGER :: i, j, k
@@ -430,26 +431,11 @@ CONTAINS
             DO j = 2, jmax - 1
                xp(1,i,j,k) = UniformSpacing(xp(1,i,1,k), xp(1,i,jmax,k), j, jmax)
                xp(2,i,j,k) = UniformSpacing(xp(2,i,1,k), xp(2,i,jmax,k), j, jmax)
-               xp(3,i,j,k) = GridStretching(xp(3,i,1,k), xp(3,i,jmax,k), j, jmax)
+               xp(3,i,j,k) = GridStretching(xp(3,i,1,k), xp(3,i,jmax,k), j, jmax, cy1)
             ENDDO
          ENDDO
       ENDDO
 
    END SUBROUTINE
-
-!-----------------------------------------------------------------------------!
-   FUNCTION GridStretching(xmin,xmax,indx,indxMax) RESULT(outcome)
-!-----------------------------------------------------------------------------!
-      !Distribute interior grid points based on stretching coefficient
-      !Interpolateion is made by referring to (i,j,k) indices
-      USE SimulationVars_m, ONLY: cy
- 
-      IMPLICIT NONE
-      REAL(KIND=wp), INTENT(IN) :: xmin, xmax
-      INTEGER, INTENT(IN) :: indx, indxMax
-      REAL(KIND=wp) :: outcome, coef
-      coef = log(1.0_wp + (exp(-cy) - 1.0_wp) * REAL(indx - 1) / REAL(indxMax - 1))
-      outcome = xmin - coef * (xmax - xmin) / cy
-   END FUNCTION GridStretching
 
 END MODULE GridSetup_m

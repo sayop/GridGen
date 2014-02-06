@@ -73,6 +73,8 @@ $ CMakeLists.txt  io  main</pre>
 </div>
 <div class="section" id="code-details">
 <h2>2. Code details<a class="headerlink" href="#code-details" title="Permalink to this headline">¶</a></h2>
+<p>The schematic below shows the flow chart of how the GridGen code runs. The code starts to run by reading the important input parameters defined in <strong>input.dat</strong> file.</p>
+<a class="reference internal image-reference" href="../_images/GridGenFlowChart.png"><img alt="../_images/GridGenFlowChart.png" src="../_images/GridGenFlowChart.png" style="width: 487.2px; height: 458.4px;" /></a>
 <p>The source code shown below is <strong>main.F90</strong> and it calls skeletal subroutines for generating grid structure. The main features of the main code is to make initialized variable arrays and read input and write output files:</p>
 <div class="highlight-python"><pre>PROGRAM main
    USE SimulationSetup_m, ONLY: InitializeCommunication

@@ -18,5 +18,5 @@ PROGRAM main
    CALL InitializeGrid
    ! Use Elliptic grid points
    CALL GridTransform
-   CALL WriteTecPlot(outputfile,'"I","J","K","Jacobian"')
+   CALL WriteTecPlot(outputfile,'"I","J","K","Jacobian","Pi","Psi"')
 END PROGRAM main

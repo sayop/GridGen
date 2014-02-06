@@ -4,11 +4,12 @@
 
 MODULE io_m
    USE Parameters_m, ONLY: wp
-   USE SimulationVars_m, ONLY: nmax, ErrMax
+   USE SimulationVars_m, ONLY: nmax
+   USE GridTransformSetup_m, ONLY: RMScrit
    IMPLICIT NONE
 
    PUBLIC :: filenameLength, Gpnts, FEsize, GeoSize, DCsize, &
-             ReadGridInput, WriteTecPlot, width, &
+             ReadGridInput, WriteTecPlot, WriteRMSlog, width, &
              iControl
 
    REAL(KIND=wp), DIMENSION(3,2) :: Gpnts    ! Geometry points(start,end)
@@ -26,7 +27,7 @@ CONTAINS
 ! Read input files for transformation 1:
 !-----------------------------------------------------------------------------!
    USE SimulationVars_m, ONLY: imax, jmax, kmax,&
-                               xblkV, cy
+                               xblkV, cy1, cy2, cy3, cy4, cy5, cy6
    IMPLICIT NONE
    INTEGER :: ios, i, j
    CHARACTER(LEN=8) :: inputVar
@@ -82,14 +83,30 @@ CONTAINS
    READ(IOunit,*) inputVar, width
    WRITE(*,'(a,f6.3)') inputVar,width
    READ(IOunit,*)
-   READ(IOunit,*) inputVar, cy
-   WRITE(*,'(a,f6.3)') inputVar, cy
+   READ(IOunit,*)
+   READ(IOunit,*)
+   READ(IOunit,*)
+   READ(IOunit,*)
+   READ(IOunit,*)
+   READ(IOunit,*)
+   READ(IOunit,*) inputVar, cy1
+   WRITE(*,'(a,f6.3)') inputVar, cy1
+   READ(IOunit,*) inputVar, cy2
+   WRITE(*,'(a,f6.3)') inputVar, cy2
+   READ(IOunit,*) inputVar, cy3
+   WRITE(*,'(a,f6.3)') inputVar, cy3
+   READ(IOunit,*) inputVar, cy4
+   WRITE(*,'(a,f6.3)') inputVar, cy4
+   READ(IOunit,*) inputVar, cy5
+   WRITE(*,'(a,f6.3)') inputVar, cy5
+   READ(IOunit,*) inputVar, cy6
+   WRITE(*,'(a,f6.3)') inputVar, cy6
    READ(IOunit,*)
    READ(IOunit,*) inputVar, nmax
    WRITE(*,'(a,i6)') inputVar, nmax
    READ(IOunit,*)
-   READ(IOunit,*) inputVar, ErrMax
-   WRITE(*,'(a,f6.3)') inputVar, ErrMax
+   READ(IOunit,*) inputVar, RMScrit
+   WRITE(*,'(a,f6.3)') inputVar, RMScrit
    READ(IOunit,*)
    READ(IOunit,*) inputVar, iControl
    WRITE(*,'(a,i6)') inputVar, iControl
@@ -102,7 +119,7 @@ CONTAINS
    ENDDO
 
    CLOSE(IOunit)
-   END SUBROUTINE
+   END SUBROUTINE ReadGridInput
 
    
 !-----------------------------------------------------------------------------!
@@ -112,6 +129,7 @@ CONTAINS
 !-----------------------------------------------------------------------------!
    USE SimulationVars_m, ONLY: imax, jmax, kmax,&
                                xp, inverseJacobian
+   USE GridTransformSetup_m, ONLY: Pi, Psi
    IMPLICIT NONE
    CHARACTER(LEN=filenameLength), INTENT(IN) :: fileName
    CHARACTER(LEN=*), INTENT(IN) :: varList
@@ -128,13 +146,28 @@ CONTAINS
    DO k = 1, kmax
       DO j = 1, jmax
          DO i = 1, imax
-            WRITE(IOunit,'(4g15.6)') xp(1,i,j,k), xp(2,i,j,k), xp(3,i,j,k), &
-                                     inverseJacobian(i,j,k)
+            WRITE(IOunit,'(6g15.6)') xp(1,i,j,k), xp(2,i,j,k), xp(3,i,j,k), &
+                                     inverseJacobian(i,j,k), Pi(i,j,k), Psi(i,j,k)
          ENDDO
       ENDDO
    ENDDO
    CLOSE(IOunit)
 
-   END SUBROUTINE
+   END SUBROUTINE WriteTecPlot
 
+!-----------------------------------------------------------------------------!
+   SUBROUTINE WriteRMSlog(nIter,fileName)
+!-----------------------------------------------------------------------------!
+! Write Tecplot file
+!-----------------------------------------------------------------------------!
+   USE GridTransformSetup_m, ONLY: RMSres
+   IMPLICIT NONE
+   CHARACTER(LEN=filenameLength), INTENT(IN) :: fileName
+   INTEGER :: nIter
+
+   OPEN(IOunit, File = fileName, FORM = 'FORMATTED', ACTION = 'WRITE', &
+        POSITION = 'APPEND')
+   write(IOunit,'(i6,g15.6)') nIter, RMSres
+   CLOSE(IOunit)
+   END SUBROUTINE WriteRMSlog
 END MODULE io_m
