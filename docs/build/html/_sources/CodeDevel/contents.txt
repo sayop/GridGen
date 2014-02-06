@@ -100,7 +100,26 @@ The **main.F90** file first refers to **InitializeGrid** subroutine defined in *
 Creaction of elliptic grid points
 +++++++++++++++++++++++++++++++++
 
-Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of :math:`Pi` and :math:`Psi`. **GridTransform.F90** file contains a subroutine named by **GridTransform** as shown below::
+In order to determine the elliptic grid points with the pre-specified boundary points, the following Poisson equations, which is given in previous **Project description** section, have to be resolved numerically. The coefficients of the equations can be determined by:
+
+.. math::
+   A_{1}=x_{\eta}^{2} + y_{\eta}^{2}
+
+   A_{2}=x_{\xi}x_{\eta} + y_{\xi}y_{\eta}
+
+   A_{3}=x_{\xi}^{2} + y_{\xi}^{2}
+
+
+
+Then, applying finite difference approximation to the governing equations can be transformed into the linear system of equations. The arranged matrix form of equations shown below can be solved for unknown implicitly at every pseudo-time level. At every time loop, the code updates the coefficients composed of :math:`\phi` and :math:`psi`, and adjacent points. The detailed relations of each coefficients are not shown here for brevity.
+
+.. math::
+   a_{i,j} x_{i-1,j}^{n+1} + b_{i,j} x_{i,j}^{n+1} + c_{i,j} x_{i+1,j}^{n+1} = d_{i,j}
+
+   e_{i,j} y_{i-1,j}^{n+1} + f_{i,j} y_{i,j}^{n+1} + g_{i,j} y_{i+1,j}^{n+1} = h_{i,j}
+
+
+Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of :math:`\phi` and :math:`\psi`. **GridTransform.F90** file contains a subroutine named by **GridTransform** as shown below::
 
   !-----------------------------------------------------------------------------!
      SUBROUTINE GridTransform()
@@ -121,7 +140,7 @@ Once initial algebraic grid points are created, the code is ready to make ellipt
      CALL CalculateGridJacobian
      END SUBROUTINE GridTransform
 
-Before going into the main loop for solving poisson equations, the code calculate control terms with :math:`Pi` and :math:`Psi`. Even though the assigned project made an assumption of linear interpolated distribution of :math:`Pi` and :math:`Psi` at interior points, the GridGen code is designed to allow :math:`Pi` and :math:`Psi` be weighted in :math:`j` and :math:`i` directions, respectively. This effect is made by the grid stretching formula. This will be revisited for discussion on **Grid 5**.
+Before going into the main loop for solving poisson equations, the code calculate control terms with :math:`\phi` and :math:`\psi`. Even though the assigned project made an assumption of linear interpolated distribution of :math:`\phi` and :math:`\psi` at interior points, the GridGen code is designed to allow :math:`\phi` and :math:`\psi` be weighted in :math:`j` and :math:`i` directions, respectively. This effect is made by the grid stretching formula. This will be revisited for discussion on **Grid 5**.
 
 Here, main DO-loop routine goes with setup of coefficients of governing equations and Thomas loop. The Thomas loop operates with line Gauss-Siedel method for resolving unknown variables, :math:`x` and :math:`y`, with tri-diagonal matrix of coefficients of finite difference approximation equation in a :math:`k` = constant line. Note that the GridGen code transforms the grid points with elliptic solution only in front surface, then clones the grid points to the back surface and finally creates interior points. The front surface is made up of :math:`i` and :math:`k` coordinates.
 

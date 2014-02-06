@@ -53,7 +53,7 @@
   <div class="section" id="how-to-run-the-code">
 <h1>How to run the code<a class="headerlink" href="#how-to-run-the-code" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="code-setup">
-<h2>1. Code setup<a class="headerlink" href="#code-setup" title="Permalink to this headline">¶</a></h2>
+<h2>Code setup<a class="headerlink" href="#code-setup" title="Permalink to this headline">¶</a></h2>
 <p>The GridGen source code has been developed with version management tool, GIT. The git repository was built on &#8216;github.com&#8217;. Thus, the source code as well as related document files can be cloned into user&#8217;s local machine by following command:</p>
 <div class="highlight-python"><pre>$ git clone http://github.com/sayop/GridGen.git</pre>
 </div>
@@ -97,8 +97,51 @@ $ build  cfd.x  input.dat  setup.sh</pre>
 <p>If you run this, you will get executable named <strong>cfd.x</strong> and <strong>input.dat</strong> files. The input file is made by default. You can quickly change the required options.</p>
 </div>
 <div class="section" id="input-file-setup">
-<h2>2. Input file setup<a class="headerlink" href="#input-file-setup" title="Permalink to this headline">¶</a></h2>
-<p>Under construction</p>
+<h2>Input file setup<a class="headerlink" href="#input-file-setup" title="Permalink to this headline">¶</a></h2>
+<p>The GridGen code allows user to set multiple options to generate grid by reading <strong>input.dat</strong> file at the beginning of the computation. Followings are default setup values you can find in the input file when you run <strong>setup.sh</strong> script:</p>
+<div class="highlight-python"><pre># Input file for tecplot print
+Flow in a channel
+imax            41
+jmax            2
+kmax            19
+# domain input (Corner points: x,y coordinates)
+p1              -0.8    0.0     0.0
+p2              1.8     0.0     0.0
+p3              -0.8    0.0     1.0
+p4              1.8     0.0     1.0
+GeoStart        0.0     0.0     0.0
+GeoEnd          1.0     0.0     0.0
+FEsize          11
+GeoSize         21
+DCsize          11
+width           0.1
+# Grid clustering:
+# cy1: stretched grid in z
+# cy2: stretched Pi in z
+# cy3: stretched Psi in x
+# cy4: stretched grid along FE
+# cy5: stretched grid along ED
+# cy6: stretched grid along DC
+cy1             2.0
+cy2             -5.001
+cy3             0.001
+cy4             -1.2
+cy5             1.0
+cy6             0.001
+# Iteration max: If nmax == 0, elliptic grid won't be calculated
+nmax            500
+# RMS Criterion
+RMScrit         1.0E-6
+# Calculate control terms: Pi, Psi
+iControl        1</pre>
+</div>
+<ul class="simple">
+<li><strong>imax, jmax, kmax</strong>: These three parameters set the size of grid points in <span class="math">\(x\)</span>, <span class="math">\(y\)</span>, and <span class="math">\(z\)</span> direction, respectively.</li>
+<li><strong>p1, p2, p3, p4</strong>: Define the corner points that form the front surface of the 3-dimensional computational domain.</li>
+<li><strong>GeoStart, GeoEnd</strong>: Start and end points of airfoil geometry</li>
+<li><strong>FEsize, GeoSize, DCsize</strong>: Number of grid points along FE, airfoil shape, and DC</li>
+<li><strong>width</strong>: Depth of 3D computational domain in <span class="math">\(y\)</span>-direction.</li>
+</ul>
 </div>
 </div>
 
@@ -111,8 +154,8 @@ $ build  cfd.x  input.dat  setup.sh</pre>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">How to run the code</a><ul>
-<li><a class="reference internal" href="#code-setup">1. Code setup</a></li>
-<li><a class="reference internal" href="#input-file-setup">2. Input file setup</a></li>
+<li><a class="reference internal" href="#code-setup">Code setup</a></li>
+<li><a class="reference internal" href="#input-file-setup">Input file setup</a></li>
 </ul>
 </li>
 </ul>

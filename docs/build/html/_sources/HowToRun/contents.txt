@@ -1,8 +1,8 @@
 How to run the code
 ===================
 
-1. Code setup
--------------
+Code setup
+----------
 
 The GridGen source code has been developed with version management tool, GIT. The git repository was built on 'github.com'. Thus, the source code as well as related document files can be cloned into user's local machine by following command::
 
@@ -49,7 +49,54 @@ If you open the git-cloned folder **GridGen**, you will see two different folder
 If you run this, you will get executable named **cfd.x** and **input.dat** files. The input file is made by default. You can quickly change the required options.
 
 
-2. Input file setup
--------------------
+Input file setup
+----------------
 
-Under construction
+The GridGen code allows user to set multiple options to generate grid by reading **input.dat** file at the beginning of the computation. Followings are default setup values you can find in the input file when you run **setup.sh** script::
+
+  # Input file for tecplot print
+  Flow in a channel
+  imax            41
+  jmax            2
+  kmax            19
+  # domain input (Corner points: x,y coordinates)
+  p1              -0.8    0.0     0.0
+  p2              1.8     0.0     0.0
+  p3              -0.8    0.0     1.0
+  p4              1.8     0.0     1.0
+  GeoStart        0.0     0.0     0.0
+  GeoEnd          1.0     0.0     0.0
+  FEsize          11
+  GeoSize         21
+  DCsize          11
+  width           0.1
+  # Grid clustering:
+  # cy1: stretched grid in z
+  # cy2: stretched Pi in z
+  # cy3: stretched Psi in x
+  # cy4: stretched grid along FE
+  # cy5: stretched grid along ED
+  # cy6: stretched grid along DC
+  cy1             2.0
+  cy2             -5.001
+  cy3             0.001
+  cy4             -1.2
+  cy5             1.0
+  cy6             0.001
+  # Iteration max: If nmax == 0, elliptic grid won't be calculated
+  nmax            500
+  # RMS Criterion
+  RMScrit         1.0E-6
+  # Calculate control terms: Pi, Psi
+  iControl        1
+
+
+* **imax, jmax, kmax**: These three parameters set the size of grid points in :math:`x`, :math:`y`, and :math:`z` direction, respectively.
+
+* **p1, p2, p3, p4**: Define the corner points that form the front surface of the 3-dimensional computational domain.
+
+* **GeoStart, GeoEnd**: Start and end points of airfoil geometry
+
+* **FEsize, GeoSize, DCsize**: Number of grid points along FE, airfoil shape, and DC
+
+* **width**: Depth of 3D computational domain in :math:`y`-direction.
