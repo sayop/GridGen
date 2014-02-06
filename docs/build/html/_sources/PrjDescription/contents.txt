@@ -89,28 +89,28 @@ Challenges
 
 Demonstrate your solver by generating 5 grids (each with 41x19 grid points):
 
-Grid 1
-++++++
+Grid #1
++++++++
 
 Initial algebraic grid, non-clustered (:math:`C_{y}` = 0.001)
 
-Grid 2
-++++++
+Grid #2
++++++++
 
 Initial algebraic grid, clustered (:math:`C_{y}` = 2.0)
 
-Grid 3
-++++++
+Grid #3
++++++++
 
 Elliptic grid, clustered (:math:`C_{y}` = 2.0), no control terms (:math:`\phi` = :math:`\psi` = 0)
 
-Grid 4
-++++++
+Grid #4
++++++++
 
 Elliptic grid, clustered (:math:`C_{y}` = 2.0), with control terms
 
-Grid 5
-++++++
+Grid #5
++++++++
 
 Now, use your program to generate the best grid you can for inviscid , subsonic flow in the geometry shown. You must keep imax = 41, jmax = 19 and not change the size or shape of the outer and wall boundaries. You may, however, change the grid spacing along any and all of the boundaries and use different levels of grid clustering wherever you think it is appropriate.
 
