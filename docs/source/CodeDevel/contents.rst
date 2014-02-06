@@ -1,8 +1,8 @@
 Code development
 ================
 
-1. GridGen Code summary
----------------------------
+GridGen Code summary
+--------------------
 
 The present project is to make a grid-generator for 3-D computational domain around a modified NACA 00xx series airfoil in a channel. The assigned project is inherently aimed at 2-D grid. However, the currently built GridGen code has a capability of 3-D grid generation.
 
@@ -27,15 +27,15 @@ The **main** folder is only used for containing grid-setup related source files.
    > SimulationVars.F90
 
 
-2. Code details
----------------
+Details of GridGen development
+------------------------------
 
-The schematic below shows the flow chart of how the GridGen code runs. The code starts to run by reading the important input parameters defined in **input.dat** file.
+The GridGen code is made for creating 3-D computational domain with pre-described points value along the 2D airfoil geometry. The schematic below shows the flow chart of how the GridGen code runs. 
 
 .. image:: ./images/GridGenFlowChart.png
    :scale: 80%
 
-The source code shown below is **main.F90** and it calls skeletal subroutines for generating grid structure. The main features of the main code is to make initialized variable arrays and read input and write output files::
+The source code shown below is **main.F90** and it calls skeletal subroutines for generating grid structure. The main features of the main code is to (1) read input file, (2) make initialized variable arrays, (3) set initial algebraic grid points, (4) create elliptic grid points, and (5) finally write output files::
 
   PROGRAM main
      USE SimulationSetup_m, ONLY: InitializeCommunication
@@ -57,6 +57,13 @@ The source code shown below is **main.F90** and it calls skeletal subroutines fo
      CALL WriteTecPlot(outputfile,'"I","J","K","Jacobian"')
   END PROGRAM main
 
+
+Creation of algebraic grid points
++++++++++++++++++++++++++++++++++
+
+The code starts to run by reading the important input parameters defined in **input.dat** file. The input data file first contains the number of i, j, k directional grid points. Then the code reads airfoil geometry data from this input file, which provides the bottom edge points of the domain. The input file also contains four vertex points in :math:`(x,y,z)` coordinates. Thus those points forms a 2-dimensional surface, which is supposed to be created in this project. Next, the code clones these grid points and locates them away from this surface in :math:`j`-direction, resulting in 3-dimensional computational domain. Based on these boundary grid points, the code runs with Algebratic grid generating subroutine and gives initial conditions for elliptic solution for grid transformation.
+
+
 The **main.F90** file first refers to **InitializeGrid** subroutine defined in **GridSetup.F90** file. The main function of this routine is to call again multiple subroutines defined in same file. The subroutine definition shown below summarizes the how the code runs for the grid initialization::
 
   !-----------------------------------------------------------------------------!
@@ -77,17 +84,45 @@ The **main.F90** file first refers to **InitializeGrid** subroutine defined in *
 
      END SUBROUTINE
 
-* **CALL ReadGridInput**: Reads important user defined variables and parameters for grid configuration.
+* **ReadGridInput**: Reads important user defined variables and parameters for grid configuration.
 
-* **CALL InitializeGridArrays**: Initialize the single- and multi-dimensional arrays and set their size with input parameters(for example, imax, jmax, kmax).
+* **InitializeGridArrays**: Initialize the single- and multi-dimensional arrays and set their size with input parameters(for example, imax, jmax, kmax).
 
-* **CALL CreateBottomEdge**: Generate point values for airfoil geometry.
+* **CreateBottomEdge**: Generate point values for airfoil geometry.
 
-* **CALL SetEdgePnts**: Generate grid points along 8 edges of the computational domain.
+* **SetEdgePnts**: Generate grid points along 8 edges of the computational domain.
 
-* **CALL GridPntsAlgbra**: Based on the edge points, this routine will distribute grid points located on each 6 surfaces of the computational domain.
+* **GridPntsAlgbra**: Based on the edge points, this routine will distribute grid points located on each 6 surfaces of the computational domain.
 
-* **CALL GenerateInteriorPoints**: Based on grid points along the edges and surfaces, this routine will create interior grid points that are aligned with user-defined grid point interpolations.
+* **GenerateInteriorPoints**: Based on grid points along the edges and surfaces, this routine will create interior grid points that are aligned with user-defined grid point interpolations.
 
+
+Creaction of elliptic grid points
++++++++++++++++++++++++++++++++++
+
+Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of :math:`Pi` and :math:`Psi`. **GridTransform.F90** file contains a subroutine named by **GridTransform** as shown below::
+
+  !-----------------------------------------------------------------------------!
+     SUBROUTINE GridTransform()
+  !-----------------------------------------------------------------------------!
+     IMPLICIT NONE
+     INTEGER :: n
+  
+     CALL InitializeArrays
+     IF ( iControl == 1) CALL CalculatePiPsi
+     DO n = 1, nmax
+        CALL CalculateA123
+        CALL ThomasLoop
+        CALL WriteRMSlog(n,RMSlogfile)
+        IF (RMSres <= RMScrit) EXIT
+     ENDDO
+     CALL CopyFrontTOBack
+     CALL GenerateInteriorPoints
+     CALL CalculateGridJacobian
+     END SUBROUTINE GridTransform
+
+Before going into the main loop for solving poisson equations, the code calculate control terms with :math:`Pi` and :math:`Psi`. Even though the assigned project made an assumption of linear interpolated distribution of :math:`Pi` and :math:`Psi` at interior points, the GridGen code is designed to allow :math:`Pi` and :math:`Psi` be weighted in :math:`j` and :math:`i` directions, respectively. This effect is made by the grid stretching formula. This will be revisited for discussion on **Grid 5**.
+
+Here, main DO-loop routine goes with setup of coefficients of governing equations and Thomas loop. The Thomas loop operates with line Gauss-Siedel method for resolving unknown variables, :math:`x` and :math:`y`, with tri-diagonal matrix of coefficients of finite difference approximation equation in a :math:`k` = constant line. Note that the GridGen code transforms the grid points with elliptic solution only in front surface, then clones the grid points to the back surface and finally creates interior points. The front surface is made up of :math:`i` and :math:`k` coordinates.
 
 
