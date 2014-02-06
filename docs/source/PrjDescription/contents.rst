@@ -14,7 +14,7 @@ oil chord.
 
 A sketch of the computational domain is shown below:
 
-.. image:: ./images/CP1_compute_domain.png
+.. figure:: ./images/CP1_compute_domain.png
    :scale: 60%
 
 Each grid point can be described by :math:`(x,y)` location or :math:`(i,j)` location where :math:`i` is the index in the :math:`\xi` direction and the :math:`j` index is in the :math:`\eta` direction. The grid should have imax=41 points in the :math:`\xi` direction and jmax=19 points in the :math:`\eta` direction. The coordinates of points A-F shown in the figure are given in the following table:
