@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -53,7 +55,7 @@
   <div class="section" id="code-development">
 <h1>Code development<a class="headerlink" href="#code-development" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="gridgen-code-summary">
-<h2>1. GridGen Code summary<a class="headerlink" href="#gridgen-code-summary" title="Permalink to this headline">¶</a></h2>
+<h2>GridGen Code summary<a class="headerlink" href="#gridgen-code-summary" title="Permalink to this headline">¶</a></h2>
 <p>The present project is to make a grid-generator for 3-D computational domain around a modified NACA 00xx series airfoil in a channel. The assigned project is inherently aimed at 2-D grid. However, the currently built GridGen code has a capability of 3-D grid generation.</p>
 <p>The source code contains two directories, &#8216;io&#8217;, and &#8216;main&#8217;, for input/output related sources and grid-setup related sources, respectively. &#8216;CMakeLists.txt&#8217; file is also included for cmake compiling.</p>
 <div class="highlight-python"><pre>$ cd GridGen/CODEdev/src/
@@ -71,11 +73,11 @@ $ CMakeLists.txt  io  main</pre>
 &gt; SimulationVars.F90</pre>
 </div>
 </div>
-<div class="section" id="code-details">
-<h2>2. Code details<a class="headerlink" href="#code-details" title="Permalink to this headline">¶</a></h2>
-<p>The schematic below shows the flow chart of how the GridGen code runs. The code starts to run by reading the important input parameters defined in <strong>input.dat</strong> file.</p>
+<div class="section" id="details-of-gridgen-development">
+<h2>Details of GridGen development<a class="headerlink" href="#details-of-gridgen-development" title="Permalink to this headline">¶</a></h2>
+<p>The GridGen code is made for creating 3-D computational domain with pre-described points value along the 2D airfoil geometry. The schematic below shows the flow chart of how the GridGen code runs.</p>
 <a class="reference internal image-reference" href="../_images/GridGenFlowChart.png"><img alt="../_images/GridGenFlowChart.png" src="../_images/GridGenFlowChart.png" style="width: 487.2px; height: 458.4px;" /></a>
-<p>The source code shown below is <strong>main.F90</strong> and it calls skeletal subroutines for generating grid structure. The main features of the main code is to make initialized variable arrays and read input and write output files:</p>
+<p>The source code shown below is <strong>main.F90</strong> and it calls skeletal subroutines for generating grid structure. The main features of the main code is to (1) read input file, (2) make initialized variable arrays, (3) set initial algebraic grid points, (4) create elliptic grid points, and (5) finally write output files:</p>
 <div class="highlight-python"><pre>PROGRAM main
    USE SimulationSetup_m, ONLY: InitializeCommunication
    USE GridSetup_m, ONLY: InitializeGrid
@@ -96,6 +98,9 @@ $ CMakeLists.txt  io  main</pre>
    CALL WriteTecPlot(outputfile,'"I","J","K","Jacobian"')
 END PROGRAM main</pre>
 </div>
+<div class="section" id="creation-of-algebraic-grid-points">
+<h3>Creation of algebraic grid points<a class="headerlink" href="#creation-of-algebraic-grid-points" title="Permalink to this headline">¶</a></h3>
+<p>The code starts to run by reading the important input parameters defined in <strong>input.dat</strong> file. The input data file first contains the number of i, j, k directional grid points. Then the code reads airfoil geometry data from this input file, which provides the bottom edge points of the domain. The input file also contains four vertex points in <span class="math">\((x,y,z)\)</span> coordinates. Thus those points forms a 2-dimensional surface, which is supposed to be created in this project. Next, the code clones these grid points and locates them away from this surface in <span class="math">\(j\)</span>-direction, resulting in 3-dimensional computational domain. Based on these boundary grid points, the code runs with Algebratic grid generating subroutine and gives initial conditions for elliptic solution for grid transformation.</p>
 <p>The <strong>main.F90</strong> file first refers to <strong>InitializeGrid</strong> subroutine defined in <strong>GridSetup.F90</strong> file. The main function of this routine is to call again multiple subroutines defined in same file. The subroutine definition shown below summarizes the how the code runs for the grid initialization:</p>
 <div class="highlight-python"><pre>!-----------------------------------------------------------------------------!
    SUBROUTINE InitializeGrid()
@@ -116,13 +121,39 @@ END PROGRAM main</pre>
    END SUBROUTINE</pre>
 </div>
 <ul class="simple">
-<li><strong>CALL ReadGridInput</strong>: Reads important user defined variables and parameters for grid configuration.</li>
-<li><strong>CALL InitializeGridArrays</strong>: Initialize the single- and multi-dimensional arrays and set their size with input parameters(for example, imax, jmax, kmax).</li>
-<li><strong>CALL CreateBottomEdge</strong>: Generate point values for airfoil geometry.</li>
-<li><strong>CALL SetEdgePnts</strong>: Generate grid points along 8 edges of the computational domain.</li>
-<li><strong>CALL GridPntsAlgbra</strong>: Based on the edge points, this routine will distribute grid points located on each 6 surfaces of the computational domain.</li>
-<li><strong>CALL GenerateInteriorPoints</strong>: Based on grid points along the edges and surfaces, this routine will create interior grid points that are aligned with user-defined grid point interpolations.</li>
+<li><strong>ReadGridInput</strong>: Reads important user defined variables and parameters for grid configuration.</li>
+<li><strong>InitializeGridArrays</strong>: Initialize the single- and multi-dimensional arrays and set their size with input parameters(for example, imax, jmax, kmax).</li>
+<li><strong>CreateBottomEdge</strong>: Generate point values for airfoil geometry.</li>
+<li><strong>SetEdgePnts</strong>: Generate grid points along 8 edges of the computational domain.</li>
+<li><strong>GridPntsAlgbra</strong>: Based on the edge points, this routine will distribute grid points located on each 6 surfaces of the computational domain.</li>
+<li><strong>GenerateInteriorPoints</strong>: Based on grid points along the edges and surfaces, this routine will create interior grid points that are aligned with user-defined grid point interpolations.</li>
 </ul>
+</div>
+<div class="section" id="creaction-of-elliptic-grid-points">
+<h3>Creaction of elliptic grid points<a class="headerlink" href="#creaction-of-elliptic-grid-points" title="Permalink to this headline">¶</a></h3>
+<p>Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of <span class="math">\(Pi\)</span> and <span class="math">\(Psi\)</span>. <strong>GridTransform.F90</strong> file contains a subroutine named by <strong>GridTransform</strong> as shown below:</p>
+<div class="highlight-python"><pre>!-----------------------------------------------------------------------------!
+   SUBROUTINE GridTransform()
+!-----------------------------------------------------------------------------!
+   IMPLICIT NONE
+   INTEGER :: n
+
+   CALL InitializeArrays
+   IF ( iControl == 1) CALL CalculatePiPsi
+   DO n = 1, nmax
+      CALL CalculateA123
+      CALL ThomasLoop
+      CALL WriteRMSlog(n,RMSlogfile)
+      IF (RMSres &lt;= RMScrit) EXIT
+   ENDDO
+   CALL CopyFrontTOBack
+   CALL GenerateInteriorPoints
+   CALL CalculateGridJacobian
+   END SUBROUTINE GridTransform</pre>
+</div>
+<p>Before going into the main loop for solving poisson equations, the code calculate control terms with <span class="math">\(Pi\)</span> and <span class="math">\(Psi\)</span>. Even though the assigned project made an assumption of linear interpolated distribution of <span class="math">\(Pi\)</span> and <span class="math">\(Psi\)</span> at interior points, the GridGen code is designed to allow <span class="math">\(Pi\)</span> and <span class="math">\(Psi\)</span> be weighted in <span class="math">\(j\)</span> and <span class="math">\(i\)</span> directions, respectively. This effect is made by the grid stretching formula. This will be revisited for discussion on <strong>Grid 5</strong>.</p>
+<p>Here, main DO-loop routine goes with setup of coefficients of governing equations and Thomas loop. The Thomas loop operates with line Gauss-Siedel method for resolving unknown variables, <span class="math">\(x\)</span> and <span class="math">\(y\)</span>, with tri-diagonal matrix of coefficients of finite difference approximation equation in a <span class="math">\(k\)</span> = constant line. Note that the GridGen code transforms the grid points with elliptic solution only in front surface, then clones the grid points to the back surface and finally creates interior points. The front surface is made up of <span class="math">\(i\)</span> and <span class="math">\(k\)</span> coordinates.</p>
+</div>
 </div>
 </div>
 
@@ -135,8 +166,12 @@ END PROGRAM main</pre>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Code development</a><ul>
-<li><a class="reference internal" href="#gridgen-code-summary">1. GridGen Code summary</a></li>
-<li><a class="reference internal" href="#code-details">2. Code details</a></li>
+<li><a class="reference internal" href="#gridgen-code-summary">GridGen Code summary</a></li>
+<li><a class="reference internal" href="#details-of-gridgen-development">Details of GridGen development</a><ul>
+<li><a class="reference internal" href="#creation-of-algebraic-grid-points">Creation of algebraic grid points</a></li>
+<li><a class="reference internal" href="#creaction-of-elliptic-grid-points">Creaction of elliptic grid points</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -186,7 +221,7 @@ END PROGRAM main</pre>
     </div>
     <div class="footer">
         &copy; Copyright 2014, Sayop Kim.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
