@@ -141,6 +141,10 @@ iControl        1</pre>
 <li><strong>GeoStart, GeoEnd</strong>: Start and end points of airfoil geometry</li>
 <li><strong>FEsize, GeoSize, DCsize</strong>: Number of grid points along FE, airfoil shape, and DC</li>
 <li><strong>width</strong>: Depth of 3D computational domain in <span class="math">\(y\)</span>-direction.</li>
+<li><strong>cy1 ~ cy6</strong>: Stretching parameters used in the stretching formula, which is inherently defined for the grid point spacing in the <span class="math">\(z\)</span> direction. In this code, this formula is applied to control terms and bottom edge spacing to define a new grid alignment for Grid #5.</li>
+<li><strong>nmax</strong>: Maximum number of main loop. If the residual criterion is met before this maximum number is reached, the code will be terminated. If nmax is set to 0, the code will only run for the algebraic grid.</li>
+<li><strong>RMScrit</strong>: Minimum RMS residual value to obtain the coverged Thomas method calculation.</li>
+<li><strong>iControl</strong>: If it is 1, the code runs with pre-specified <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span> at the boundary points.</li>
 </ul>
 </div>
 </div>

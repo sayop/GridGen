@@ -100,3 +100,11 @@ The GridGen code allows user to set multiple options to generate grid by reading
 * **FEsize, GeoSize, DCsize**: Number of grid points along FE, airfoil shape, and DC
 
 * **width**: Depth of 3D computational domain in :math:`y`-direction.
+
+* **cy1 ~ cy6**: Stretching parameters used in the stretching formula, which is inherently defined for the grid point spacing in the :math:`z` direction. In this code, this formula is applied to control terms and bottom edge spacing to define a new grid alignment for Grid #5.
+
+* **nmax**: Maximum number of main loop. If the residual criterion is met before this maximum number is reached, the code will be terminated. If nmax is set to 0, the code will only run for the algebraic grid.
+
+* **RMScrit**: Minimum RMS residual value to obtain the coverged Thomas method calculation.
+
+* **iControl**: If it is 1, the code runs with pre-specified :math:`\phi` and :math:`\psi` at the boundary points.
