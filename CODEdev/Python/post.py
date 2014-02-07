@@ -23,10 +23,10 @@ MaxX = 150
 MinY = 1.0e-6
 MaxY = max(RMS3)
 
-p = plt.plot(nIter3,RMS3, 'k--', label='Grid #3')
+p = plt.plot(nIter3,RMS3, 'k-', label='Grid #3')
 p = plt.plot(nIter4,RMS4, 'b--', label='Grid #4')
-p = plt.plot(nIter5,RMS5, 'r--', label='Grid #5')
-plt.setp(p, linewidth='0.5')
+p = plt.plot(nIter5,RMS5, 'r-', label='Grid #5')
+plt.setp(p, linewidth='1.0')
 plt.axis([MinX,MaxX, MinY, MaxY])
 plt.xscale('linear')
 plt.yscale('log')
