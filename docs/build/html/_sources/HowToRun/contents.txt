@@ -1,6 +1,24 @@
 How to run the code
 ===================
 
+
+Machine platform for development
+--------------------------------
+
+This Grid Generation code has been developed on personal computer operating on linux system (Ubuntu Linux 3.2.0-38-generic x86_64). Machine specification is summarized as shown below:
+
+vendor_id       : GenuineIntel
+
+cpu family      : 6
+
+model name      : Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz
+
+cpu cores       : 4
+
+Memory		: 16418112 kB
+
+
+
 Code setup
 ----------
 
@@ -8,7 +26,7 @@ The GridGen source code has been developed with version management tool, GIT. Th
 
    $ git clone http://github.com/sayop/GridGen.git
 
-If you open the git-cloned folder **GridGen**, you will see two different folder and README file. The **CODEdev** folder contains again **bin** folder and **src** folder. In order to run the code, user should run **setup.sh** script in the **bin** folder. It may contain **build** folder, which might have been created in the different platform. Thus it is recommended that user should remove **build** folder before setting up the code. Note that the **setup.sh** script will run **cmake** command. Thus, make sure to have cmake installed on your system::
+If you open the git-cloned folder **GridGen**, you will see two different folder and README file. The **CODEdev** folder contains again **bin** folder, **Python** folder, and **src** folder. In order to run the code, user should run **setup.sh** script in the **bin** folder. **Python** folder contains python script that is used to postprocess RMS residual data. It may contain **build** folder, which might have been created in the different platform. Thus it is recommended that user should remove **build** folder before setting up the code. Note that the **setup.sh** script will run **cmake** command. Thus, make sure to have cmake installed on your system::
 
   $ rm -rf build
   $ ./setup.sh

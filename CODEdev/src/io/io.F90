@@ -165,8 +165,12 @@ CONTAINS
    CHARACTER(LEN=filenameLength), INTENT(IN) :: fileName
    INTEGER :: nIter
 
-   OPEN(IOunit, File = fileName, FORM = 'FORMATTED', ACTION = 'WRITE', &
-        POSITION = 'APPEND')
+   IF ( nIter == 1 ) THEN
+      OPEN(IOunit, File = fileName, FORM = 'FORMATTED', ACTION = 'WRITE')
+   ELSE
+      OPEN(IOunit, File = fileName, FORM = 'FORMATTED', ACTION = 'WRITE', &
+           POSITION = 'APPEND')
+   ENDIF
    write(IOunit,'(i6,g15.6)') nIter, RMSres
    CLOSE(IOunit)
    END SUBROUTINE WriteRMSlog

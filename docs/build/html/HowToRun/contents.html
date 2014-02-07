@@ -52,12 +52,21 @@
             
   <div class="section" id="how-to-run-the-code">
 <h1>How to run the code<a class="headerlink" href="#how-to-run-the-code" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="machine-platform-for-development">
+<h2>Machine platform for development<a class="headerlink" href="#machine-platform-for-development" title="Permalink to this headline">¶</a></h2>
+<p>This Grid Generation code has been developed on personal computer operating on linux system (Ubuntu Linux 3.2.0-38-generic x86_64). Machine specification is summarized as shown below:</p>
+<p>vendor_id       : GenuineIntel</p>
+<p>cpu family      : 6</p>
+<p>model name      : Intel(R) Core(TM) i7-2600 CPU &#64; 3.40GHz</p>
+<p>cpu cores       : 4</p>
+<p>Memory          : 16418112 kB</p>
+</div>
 <div class="section" id="code-setup">
 <h2>Code setup<a class="headerlink" href="#code-setup" title="Permalink to this headline">¶</a></h2>
 <p>The GridGen source code has been developed with version management tool, GIT. The git repository was built on &#8216;github.com&#8217;. Thus, the source code as well as related document files can be cloned into user&#8217;s local machine by following command:</p>
 <div class="highlight-python"><pre>$ git clone http://github.com/sayop/GridGen.git</pre>
 </div>
-<p>If you open the git-cloned folder <strong>GridGen</strong>, you will see two different folder and README file. The <strong>CODEdev</strong> folder contains again <strong>bin</strong> folder and <strong>src</strong> folder. In order to run the code, user should run <strong>setup.sh</strong> script in the <strong>bin</strong> folder. It may contain <strong>build</strong> folder, which might have been created in the different platform. Thus it is recommended that user should remove <strong>build</strong> folder before setting up the code. Note that the <strong>setup.sh</strong> script will run <strong>cmake</strong> command. Thus, make sure to have cmake installed on your system:</p>
+<p>If you open the git-cloned folder <strong>GridGen</strong>, you will see two different folder and README file. The <strong>CODEdev</strong> folder contains again <strong>bin</strong> folder, <strong>Python</strong> folder, and <strong>src</strong> folder. In order to run the code, user should run <strong>setup.sh</strong> script in the <strong>bin</strong> folder. <strong>Python</strong> folder contains python script that is used to postprocess RMS residual data. It may contain <strong>build</strong> folder, which might have been created in the different platform. Thus it is recommended that user should remove <strong>build</strong> folder before setting up the code. Note that the <strong>setup.sh</strong> script will run <strong>cmake</strong> command. Thus, make sure to have cmake installed on your system:</p>
 <div class="highlight-python"><pre>$ rm -rf build
 $ ./setup.sh
 -- The C compiler identification is GNU 4.6.3
@@ -158,6 +167,7 @@ iControl        1</pre>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">How to run the code</a><ul>
+<li><a class="reference internal" href="#machine-platform-for-development">Machine platform for development</a></li>
 <li><a class="reference internal" href="#code-setup">Code setup</a></li>
 <li><a class="reference internal" href="#input-file-setup">Input file setup</a></li>
 </ul>
