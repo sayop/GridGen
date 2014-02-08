@@ -88,19 +88,15 @@ Grid images will be shown and anaysis will be added here!!
 
 <Figure: Grid points alignment of Grid #4>
 
-.. table::
-   :class: borderless
  
-   +----------------------------------------+-----------------------------------------------+
-   | - No stretched 'cy = 0.001'            | - Stretching factor 'cy3 = -10' applied       |
-   |                                        |                                               |
-   | .. _figa:                              | .. _figb:                                     |
-   |                                        |                                               |
-   | .. figure:: ./images/NoStretchedPi.png | .. figure:: ./images/Stretched-10Pi.png       |
-   |    :align: left                        |    :align: left                               |
-   |    :scale: 30%                         |    :scale: 30%                                |
-   |                                        |                                               |
-   +----------------------------------------+-----------------------------------------------+
+ +----------------------------------------+-----------------------------------------+
+ | - No stretched 'cy = 0.001'            | - Stretching factor 'cy3 = -10' applied |
+ |                                        |                                         |
+ | .. figure:: ./images/NoStretchedPi.png | .. figure:: ./images/Stretched-10Pi.png |
+ |    :align: left                        |    :align: left                         |
+ |    :scale: 25%                         |    :scale: 25%                          |
+ |                                        |                                         |
+ +----------------------------------------+-----------------------------------------+
 
 
 <Figure: Change in :math:`\phi` by stretching factor 'cy3'>
