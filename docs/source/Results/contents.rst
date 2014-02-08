@@ -93,9 +93,9 @@ Grid images will be shown and anaysis will be added here!!
  
    +----------------------------------------+-----------------------------------------+
    | - No stretched 'cy = 0.001'            | - Stretching factor 'cy3 = -10' applied |
-   |                                        |                                         |
+   +----------------------------------------+-----------------------------------------+
    | .. image:: ./images/NoStretchedPi.png  | .. image:: ./images/Stretched-10Pi.png  |
-   |    :width: 70%                         |    :width: 70%                          |
+   |    :width: 80%                         |    :width: 80%                          |
    |                                        |                                         |
    +----------------------------------------+-----------------------------------------+
 

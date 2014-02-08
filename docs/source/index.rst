@@ -23,10 +23,12 @@ Contents:
    Discussions/contents
    code
 
-Indices and tables
-==================
+FORTRAN 90 Source code
+======================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 2
 
+   FortranSrcs/CMakeLists
+   FortranSrcs/io/srcs
+   FortranSrcs/main/srcs
