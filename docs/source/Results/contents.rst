@@ -30,12 +30,15 @@ The more quantitative analysis is available with grid Jacobian contour on the cu
 Grid #2
 -------
 
-Grid images will be shown and anaysis will be added here!!
+The second trial was made on the point spacing stretching with algebraic grid alignment. This grid is based on the same approach for Grid #1. The only change in this grid was to apply gradually clustered grid points downward at left and right boundaries. Note that the linear interpolation of :math:`x`-coordinates along the each vertical line is made only on the basis of j-index as formulated earlier. The effect of this is to make x coordinate shifting along the vertical line is identical for every point. Thus it leads to the somewhat much shifting for concentrated grid points in :math:`y`-direction. Now we can observe non-linear grid lines in j-direction. This makes grid less skewer in the leading edge of the airfoil.
 
 .. image:: ./images/mesh_pr02.png
    :width: 60%
 
 <Figure: Grid points alignment of Grid #2>
+
+
+The grid Jacobian contour is shown below. Applying grid stretching along the :math:`y` direction gives big cell volume distribution gradually upper. Change in volume along the bottom edge looks more less significant even in the leading edge. Since, however, the grid spacing is not changed in :math:`x` direction from Grid #1 alignment, we could expect some error in flux throught the cell face at leading edge achored point. The same situation happens at the trailing point of the airfoil. In some point, this grid alignment is more reliable for this geometry because the significantly high gradient of flow velocity will only take place in the leading edge so that we need more dense grid points in this reagion.
 
 .. image:: ./images/Jacobian_pr02.png
    :width: 59%
@@ -84,6 +87,23 @@ Grid images will be shown and anaysis will be added here!!
    :width: 60%
 
 <Figure: Grid points alignment of Grid #4>
+
+.. table::
+   :class: borderless
+ 
+   +----------------------------------------+-----------------------------------------------+
+   | - No stretched 'cy = 0.001'            | - Stretching factor 'cy3 = -10' applied       |
+   |                                        |                                               |
+   | .. _figa:                              | .. _figb:                                     |
+   |                                        |                                               |
+   | .. figure:: ./images/NoStretchedPi.png | .. figure:: ./images/Stretched-10Pi.png       |
+   |    :align: left                        |    :align: left                               |
+   |    :scale: 30%                         |    :scale: 30%                                |
+   |                                        |                                               |
+   +----------------------------------------+-----------------------------------------------+
+
+
+<Figure: Change in :math:`\phi` by stretching factor 'cy3'>
 
 .. image:: ./images/Jacobian_pr05.png
    :width: 59%

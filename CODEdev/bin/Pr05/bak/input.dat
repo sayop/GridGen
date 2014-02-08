@@ -22,7 +22,7 @@ width		0.1
 # cy5: stretched grid along ED
 # cy6: stretched grid along DC
 cy1		2.0
-cy2		0.001
+cy2		-5.001
 cy3		0.001
 cy4		-1.2
 cy5		1.0
