@@ -9,7 +9,7 @@ The figure below shows the grid point alignments made by the GridGen code with a
 
 
 .. image:: ./images/mesh_pr01.png
-   :width: 60%
+   :width: 70%
 
 <Figure: Grid points alignment of Grid #1>
 
@@ -17,7 +17,7 @@ The more quantitative analysis is available with grid Jacobian contour on the cu
 
 
 .. image:: ./images/Jacobian_pr01.png
-   :width: 59%
+   :width: 69%
 
 <Figure: Inverse Grid Jacobian distribution of Grid #1>
 
@@ -28,7 +28,7 @@ Grid #2: Algebraic grid with clustered points in :math:`z`
 The second trial was made on the point spacing stretching with algebraic grid alignment. This grid is based on the same approach for Grid #1. The only change in this grid was to apply gradually clustered grid points downward at left and right boundaries. Note that the linear interpolation of :math:`x`-coordinates along the each vertical line is made only on the basis of j-index as formulated earlier. The effect of this is to make x coordinate shifting along the vertical line is identical for every point. Thus it leads to the somewhat much shifting for concentrated grid points in :math:`y`-direction. Now we can observe non-linear grid lines in j-direction. This makes grid less skewer in the leading edge of the airfoil.
 
 .. image:: ./images/mesh_pr02.png
-   :width: 60%
+   :width: 70%
 
 <Figure: Grid points alignment of Grid #2>
 
@@ -36,7 +36,7 @@ The second trial was made on the point spacing stretching with algebraic grid al
 The grid Jacobian contour is shown below. Applying grid stretching along the :math:`y` direction gives big cell volume distribution gradually upper. Change in volume along the bottom edge looks more less significant even in the leading edge. Since, however, the grid spacing is not changed in :math:`x` direction from Grid #1 alignment, we could expect some error in flux throught the cell face at leading edge achored point. The same situation happens at the trailing point of the airfoil. In some point, this grid alignment is more reliable for this geometry because the significantly high gradient of flow velocity will only take place in the leading edge so that we need more dense grid points in this reagion.
 
 .. image:: ./images/Jacobian_pr02.png
-   :width: 59%
+   :width: 69%
 
 <Figure: Inverse Grid Jacobian distribution of Grid #2>
 
@@ -48,7 +48,7 @@ The grid shown below is made by the elliptic Poisson equations with clustered gr
 
 
 .. image:: ./images/mesh_pr03.png
-   :width: 60%
+   :width: 70%
 
 <Figure: Grid points alignment of Grid #3>
 
@@ -56,7 +56,7 @@ The grid shown below is made by the elliptic Poisson equations with clustered gr
 However, it is expected that curved lines right at the inlet edge and outlet edge are not aligned with the inlet flow. This misaligment could cause the flux of flow properties across the k-constant lines and thus it would make numerical errors. From the grid Jacobian contour result, sudden change in cell volume along the flow direction can be found. Maximum and minimum cell volume are found at left and right top edge and bottom edge, respectively.
 
 .. image:: ./images/Jacobian_pr03.png
-   :width: 59%
+   :width: 69%
 
 <Figure: Inverse Grid Jacobian distribution of Grid #3>
 
@@ -68,7 +68,7 @@ The problem that arise in Grid #3 case was able to be resolved by adding control
 
 
 .. image:: ./images/mesh_pr04.png
-   :width: 60%
+   :width: 70%
 
 <Figure: Grid points alignment of Grid #4>
 
@@ -76,7 +76,7 @@ The problem that arise in Grid #3 case was able to be resolved by adding control
 In this grid, we can find a severely skewed cell in the leading edge of airfoil. This is more severe than Grid #3. Making orthogonality for the vertical lines cause more vertically stand i-constant lines, hence it leads to the sharp angle between airfoil arc and i-constant line anchored at the leading edge.
 
 .. image:: ./images/Jacobian_pr04.png
-   :width: 59%
+   :width: 69%
 
 <Figure: Inverse Grid Jacobian distribution of Grid #4>
 
@@ -108,7 +108,7 @@ In this approach, an effort was made to resolve the above issues. First of all, 
 
 
 .. image:: ./images/mesh_pr05.png
-   :width: 60%
+   :width: 70%
 
 <Figure: Grid points alignment of Grid #4>
 
@@ -136,7 +136,7 @@ As can be found above, control terms can be aditionally controlled by changing '
 
 
 .. image:: ./images/Jacobian_pr05.png
-   :width: 59%
+   :width: 69%
 
 <Figure: Inverse Grid Jacobian distribution of Grid #4>
 
