@@ -19,7 +19,7 @@ nIter5 = data5[:,0]
 RMS5 = data5[:,1]
 
 MinX = 0
-MaxX = 150
+MaxX = 250
 MinY = 1.0e-6
 MaxY = max(RMS3)
 

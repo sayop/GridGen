@@ -166,11 +166,12 @@ CONTAINS
 ! Thomas method for solving tridiagonal matrix system
 ! This subroutine should be run in a pseudo time loop
    IMPLICIT NONE
-   INTEGER :: i, j, k
+   INTEGER :: i, j, k, nrms
 
    REAL(KIND=wp), DIMENSION(imax) :: a, b, c, d
    REAL(KIND=wp) :: x_ik, x_k, z_ik, z_k
    RMSres = 0.0_wp
+   nrms = 0
    j = 1
 
    DO k = 2, kmax - 1
@@ -197,6 +198,7 @@ CONTAINS
       CALL SY(1, imax, a, b, c, d)
       ! Update values at n+1 pseudo time
       DO i = 1, imax
+         nrms = nrms + 1
          RMSres = RMSres + (d(i) - xp(1,i,j,k)) ** 2
          xp(1,i,j,k) = d(i)
       ENDDO
@@ -224,10 +226,12 @@ CONTAINS
       CALL SY(1, imax, a, b, c, d)
       ! Update values at n+1 pseudo time
       DO i = 1, imax
+         nrms = nrms + 1
          RMSres = RMSres + (d(i) - xp(3,i,j,k)) ** 2
          xp(3,i,j,k) = d(i)
       ENDDO
    ENDDO
+   RMSres = ( RMSres / nrms ) ** 0.5_wp
    END SUBROUTINE ThomasLoop
 
 

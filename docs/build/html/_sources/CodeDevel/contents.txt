@@ -111,13 +111,30 @@ In order to determine the elliptic grid points with the pre-specified boundary p
 
 
 
-Then, applying finite difference approximation to the governing equations can be transformed into the linear system of equations. The arranged matrix form of equations shown below can be solved for unknown implicitly at every pseudo-time level. At every time loop, the code updates the coefficients composed of :math:`\phi` and :math:`psi`, and adjacent points. The detailed relations of each coefficients are not shown here for brevity.
+Then, applying finite difference approximation to the governing equations can be transformed into the linear system of equations. The arranged matrix form of equations shown below can be solved for unknown implicitly at every pseudo-time level. At every time loop, the code updates the coefficients composed of :math:`\phi` and :math:`\psi`, and adjacent points. The detailed relations of each coefficients are not shown here for brevity.
 
 .. math::
    a_{i,j} x_{i-1,j}^{n+1} + b_{i,j} x_{i,j}^{n+1} + c_{i,j} x_{i+1,j}^{n+1} = d_{i,j}
 
    e_{i,j} y_{i-1,j}^{n+1} + f_{i,j} y_{i,j}^{n+1} + g_{i,j} y_{i+1,j}^{n+1} = h_{i,j}
 
+
+Above equations can be numerically evaluated by the following descritized expressions:
+
+.. math::
+   a_{i,j} = e_{i,j} = A_{1\text{ }i,j}^{n}  \left(1 - \frac{\phi_{i,j}^{n}}{2} \right)
+
+   b_{i,j} = f_{i,j} = -2 \left(A_{1\text{ }i,j} + A_{3\text{ }i,j} \right)
+
+   c_{i,j} = g_{i,j} = A_{1\text{ }i,j}^{n}  \left(1 + \frac{\phi_{i,j}^{n}}{2} \right)
+
+   e_{i,j} = \frac{A_{2\text{ }i,j}^{n}}{2} \left(x_{i+1,j}^{n} - x_{i+1,j-1}^{n+1} - x_{i-1,j+1}^{n} - x_{i-1,j-1}^{n+1} \right) - A_{3\text{ }i,j}^{n} \left( x_{i,j+1}^{n} + x_{i,j-1}^{n+1} \right) - \frac{A_{2\text{ }i,j}^{n}}{2} \psi_{i,j}^{n} \left( x_{i,j+1}^{n} - x_{i,j-1}^{n+1} \right)
+
+   h_{i,j} = \frac{A_{2\text{ }i,j}^{n}}{2} \left(y_{i+1,j}^{n} - y_{i+1,j-1}^{n+1} - y_{i-1,j+1}^{n} - y_{i-1,j-1}^{n+1} \right) - A_{3\text{ }i,j}^{n} \left( y_{i,j+1}^{n} + y_{i,j-1}^{n+1} \right) - \frac{A_{2\text{ }i,j}^{n}}{2} \psi_{i,j}^{n} \left( y_{i,j+1}^{n} - y_{i,j-1}^{n+1} \right)
+
+where :math:`n` and :math:`n+1` indicate pseudo time index. Thus above equations will update grid point coordinates for :math:`n+1` time level by referring to already resolved :math:`n` time level solution. Note that the pseudo time looping goes along the successive :math:`j`-constant lines. Therefore, when writing the code, time level index in above equations was not considered as a separate program variable because :math:`j-1` constant line is already updated in the previous loop.
+
+The expressions above are only evaluted in the interior grid points. The points on the boundaries are evaluated seprately by applying given solutions as problem handout.
 
 Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of :math:`\phi` and :math:`\psi`. **GridTransform.F90** file contains a subroutine named by **GridTransform** as shown below::
 
@@ -145,3 +162,13 @@ Before going into the main loop for solving poisson equations, the code calculat
 Here, main DO-loop routine goes with setup of coefficients of governing equations and Thomas loop. The Thomas loop operates with line Gauss-Siedel method for resolving unknown variables, :math:`x` and :math:`y`, with tri-diagonal matrix of coefficients of finite difference approximation equation in a :math:`k` = constant line. Note that the GridGen code transforms the grid points with elliptic solution only in front surface, then clones the grid points to the back surface and finally creates interior points. The front surface is made up of :math:`i` and :math:`k` coordinates.
 
 
+Write Convergence history: RMS residual
++++++++++++++++++++++++++++++++++++++++
+
+In order to avoid infinite time-looping for the Thomas method, the GridGen code employs the following definition of RMS residual based on the new (:math:`n+1`) and old(:math:`n`) values of grid point coordinates.
+
+.. math::
+
+   \text{RMS}^{n} = \sqrt{\frac{1}{N} \sum_{i=2}^{imax-1} \sum_{jmax-1}^{j=2} \left[\left(x_{i,j}^{n+1} - x_{i,j}^{n} \right)^{2} + \left(y_{i,j}^{n+1} - y_{i,j}^{n} \right)^{2} \right]}
+
+where :math:`N = 2x(\text{imax}-2) x (\text{jmax}-2)` and the RMS criterion is pre-specified as: :math:`1\text{x}10^{-6}`. In this code, the convergend is assumed to be achived when RMS residual is less than the RMS criterion.

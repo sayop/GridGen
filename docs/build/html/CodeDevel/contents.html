@@ -132,9 +132,14 @@ END PROGRAM main</pre>
 <p>In order to determine the elliptic grid points with the pre-specified boundary points, the following Poisson equations, which is given in previous <strong>Project description</strong> section, have to be resolved numerically. The coefficients of the equations can be determined by:</p>
 <div class="math">
 \[A_{1}=x_{\eta}^{2} + y_{\eta}^{2}\]\[A_{2}=x_{\xi}x_{\eta} + y_{\xi}y_{\eta}\]\[A_{3}=x_{\xi}^{2} + y_{\xi}^{2}\]</div>
-<p>Then, applying finite difference approximation to the governing equations can be transformed into the linear system of equations. The arranged matrix form of equations shown below can be solved for unknown implicitly at every pseudo-time level. At every time loop, the code updates the coefficients composed of <span class="math">\(\phi\)</span> and <span class="math">\(psi\)</span>, and adjacent points. The detailed relations of each coefficients are not shown here for brevity.</p>
+<p>Then, applying finite difference approximation to the governing equations can be transformed into the linear system of equations. The arranged matrix form of equations shown below can be solved for unknown implicitly at every pseudo-time level. At every time loop, the code updates the coefficients composed of <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span>, and adjacent points. The detailed relations of each coefficients are not shown here for brevity.</p>
 <div class="math">
 \[a_{i,j} x_{i-1,j}^{n+1} + b_{i,j} x_{i,j}^{n+1} + c_{i,j} x_{i+1,j}^{n+1} = d_{i,j}\]\[e_{i,j} y_{i-1,j}^{n+1} + f_{i,j} y_{i,j}^{n+1} + g_{i,j} y_{i+1,j}^{n+1} = h_{i,j}\]</div>
+<p>Above equations can be numerically evaluated by the following descritized expressions:</p>
+<div class="math">
+\[a_{i,j} = e_{i,j} = A_{1\text{ }i,j}^{n}  \left(1 - \frac{\phi_{i,j}^{n}}{2} \right)\]\[b_{i,j} = f_{i,j} = -2 \left(A_{1\text{ }i,j} + A_{3\text{ }i,j} \right)\]\[c_{i,j} = g_{i,j} = A_{1\text{ }i,j}^{n}  \left(1 + \frac{\phi_{i,j}^{n}}{2} \right)\]\[e_{i,j} = \frac{A_{2\text{ }i,j}^{n}}{2} \left(x_{i+1,j}^{n} - x_{i+1,j-1}^{n+1} - x_{i-1,j+1}^{n} - x_{i-1,j-1}^{n+1} \right) - A_{3\text{ }i,j}^{n} \left( x_{i,j+1}^{n} + x_{i,j-1}^{n+1} \right) - \frac{A_{2\text{ }i,j}^{n}}{2} \psi_{i,j}^{n} \left( x_{i,j+1}^{n} - x_{i,j-1}^{n+1} \right)\]\[h_{i,j} = \frac{A_{2\text{ }i,j}^{n}}{2} \left(y_{i+1,j}^{n} - y_{i+1,j-1}^{n+1} - y_{i-1,j+1}^{n} - y_{i-1,j-1}^{n+1} \right) - A_{3\text{ }i,j}^{n} \left( y_{i,j+1}^{n} + y_{i,j-1}^{n+1} \right) - \frac{A_{2\text{ }i,j}^{n}}{2} \psi_{i,j}^{n} \left( y_{i,j+1}^{n} - y_{i,j-1}^{n+1} \right)\]</div>
+<p>where <span class="math">\(n\)</span> and <span class="math">\(n+1\)</span> indicate pseudo time index. Thus above equations will update grid point coordinates for <span class="math">\(n+1\)</span> time level by referring to already resolved <span class="math">\(n\)</span> time level solution. Note that the pseudo time looping goes along the successive <span class="math">\(j\)</span>-constant lines. Therefore, when writing the code, time level index in above equations was not considered as a separate program variable because <span class="math">\(j-1\)</span> constant line is already updated in the previous loop.</p>
+<p>The expressions above are only evaluted in the interior grid points. The points on the boundaries are evaluated seprately by applying given solutions as problem handout.</p>
 <p>Once initial algebraic grid points are created, the code is ready to make elliptic grid points with some control terms in terms of <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span>. <strong>GridTransform.F90</strong> file contains a subroutine named by <strong>GridTransform</strong> as shown below:</p>
 <div class="highlight-python"><pre>!-----------------------------------------------------------------------------!
    SUBROUTINE GridTransform()
@@ -158,6 +163,13 @@ END PROGRAM main</pre>
 <p>Before going into the main loop for solving poisson equations, the code calculate control terms with <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span>. Even though the assigned project made an assumption of linear interpolated distribution of <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span> at interior points, the GridGen code is designed to allow <span class="math">\(\phi\)</span> and <span class="math">\(\psi\)</span> be weighted in <span class="math">\(j\)</span> and <span class="math">\(i\)</span> directions, respectively. This effect is made by the grid stretching formula. This will be revisited for discussion on <strong>Grid 5</strong>.</p>
 <p>Here, main DO-loop routine goes with setup of coefficients of governing equations and Thomas loop. The Thomas loop operates with line Gauss-Siedel method for resolving unknown variables, <span class="math">\(x\)</span> and <span class="math">\(y\)</span>, with tri-diagonal matrix of coefficients of finite difference approximation equation in a <span class="math">\(k\)</span> = constant line. Note that the GridGen code transforms the grid points with elliptic solution only in front surface, then clones the grid points to the back surface and finally creates interior points. The front surface is made up of <span class="math">\(i\)</span> and <span class="math">\(k\)</span> coordinates.</p>
 </div>
+<div class="section" id="write-convergence-history-rms-residual">
+<h3>Write Convergence history: RMS residual<a class="headerlink" href="#write-convergence-history-rms-residual" title="Permalink to this headline">¶</a></h3>
+<p>In order to avoid infinite time-looping for the Thomas method, the GridGen code employs the following definition of RMS residual based on the new (<span class="math">\(n+1\)</span>) and old(<span class="math">\(n\)</span>) values of grid point coordinates.</p>
+<div class="math">
+\[\text{RMS}^{n} = \sqrt{\frac{1}{N} \sum_{i=2}^{imax-1} \sum_{jmax-1}^{j=2} \left[\left(x_{i,j}^{n+1} - x_{i,j}^{n} \right)^{2} + \left(y_{i,j}^{n+1} - y_{i,j}^{n} \right)^{2} \right]}\]</div>
+<p>where <span class="math">\(N = 2x(\text{imax}-2) x (\text{jmax}-2)\)</span> and the RMS criterion is pre-specified as: <span class="math">\(1\text{x}10^{-6}\)</span>. In this code, the convergend is assumed to be achived when RMS residual is less than the RMS criterion.</p>
+</div>
 </div>
 </div>
 
@@ -174,6 +186,7 @@ END PROGRAM main</pre>
 <li><a class="reference internal" href="#details-of-gridgen-development">Details of GridGen development</a><ul>
 <li><a class="reference internal" href="#creation-of-algebraic-grid-points">Creation of algebraic grid points</a></li>
 <li><a class="reference internal" href="#creaction-of-elliptic-grid-points">Creaction of elliptic grid points</a></li>
+<li><a class="reference internal" href="#write-convergence-history-rms-residual">Write Convergence history: RMS residual</a></li>
 </ul>
 </li>
 </ul>
