@@ -3,15 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to GridGen's documentation!
-===================================
+Documentaion for Elliptic Grid Generation Project
+=================================================
 
-This documentation pages are made for CFD class at Geogia Tech in 2014 Spring.
+This documentation pages are made for CFD class at Geogia Tech in 2014 Spring. This is online available at http://gridgen.readthedocs.org
 
 Author: Sayop Kim(sayopkim@gatech.edu)
 
-Contents:
-=========
+Affilation: School of Aerospace Engineering, Georgia Institute of Technology
+
+Contents
+========
 
 .. toctree::
    :maxdepth: 2

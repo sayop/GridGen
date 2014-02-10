@@ -1,6 +1,9 @@
 Code development
 ================
 
+The current project is for developing elliptic grid generator in 3-dimensional domain. Hereafter, the program developed in this project is called 'GridGen'.
+
+
 GridGen Code summary
 --------------------
 
