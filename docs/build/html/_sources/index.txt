@@ -20,7 +20,6 @@ Contents:
    CodeDevel/contents
    HowToRun/contents
    Results/contents
-   Discussions/contents
    code
 
 FORTRAN 90 Source code
